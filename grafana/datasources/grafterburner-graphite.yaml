@@ -1,0 +1,10 @@
+apiVersion: 1
+
+datasources:
+- name: grAfterburner-Graphite
+  type: graphite
+  access: proxy
+  url: http://grafterburner-graphite:80
+  editable: true
+  jsonData:
+      graphiteVersion: "1.1"

@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+  graphite:
+    container_name: grafterburner-graphite
+    image: "graphiteapp/graphite-statsd:latest"
+    restart: always
+    # ports:
+      # - 8026:80
+    volumes:
+      - "./graphite/conf:/opt/graphite/conf"
+      - "./graphite/storage:/opt/graphite/storage"
+      - "./graphite/graphite-api.yaml:/etc/graphite-api.yaml"
+    environment:
+      - "CARBON_AGGREGATOR_DISABLED=1"
+      - "REDIS_DISABLED=1"
+      - "STATSD_DISABLED=1"
+
+  grafana:
+    container_name: grafterburner-grafana
+    image: "grafana/grafana:latest"
+    restart: always
+    user: "1000"
+    ports:
+      - 8025:3000
+    volumes:
+      - "./grafana/storage:/var/lib/grafana"
+      - "./grafana/datasources:/etc/grafana/provisioning/datasources"
+      - "./grafana/dashboards:/etc/grafana/provisioning/dashboards"
+    environment:
+      - "GF_AUTH_DISABLE_LOGIN_FORM=true"
+      - "GF_AUTH_ANONYMOUS_ENABLED=true"
+      - "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+    depends_on:
+      - graphite
+
+  collectd:
+    container_name: grafterburner-collectd
+    build: collectd
+    restart: always
+    volumes:
+      - "./collectd/collectd.conf:/etc/collectd/collectd.conf"
+    depends_on:
+      - graphite
