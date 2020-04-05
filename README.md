@@ -65,9 +65,9 @@
      image: "grafana/grafana-arm32v7-linux:latest"
      ```
 4. **Optional Configurations:**
-   - edit line 25 of _docker-compose.yaml_ to change the port Grafana runs on from 8025 to something else (leave the 3000)
-   - remove line 29-32 of _docker-compose.yaml_ if you want to enable login with password for Grafana
-   - If you do not want the services to start on the boot-up of your system remove the 3 lines in _docker-compose.yaml_ that say _'restart: always'_ (line 7, 22, 39)
+   - Edit line 25 of _docker-compose.yaml_ to change the port Grafana runs on from 8025 to something else (leave the 3000).
+   - Remove line 29-32 of _docker-compose.yaml_ if you want to enable login with password for Grafana.
+   - If you do not want the services to start on the boot-up of your system remove the 3 lines in _docker-compose.yaml_ that say _'restart: always'_ (line 7, 22, 39).
    - If you wish to change how often MSI Afterburner polls your hardware for new data, open MSI Afterburner, Settings -> Monitoring -> Hardware Polling Period.
    - You will probably also want to change how often collectd fetches new data as well, so open _collectd.conf_ and edit line 11 and 15, further reading in the [collectd docs](https://collectd.org/documentation/manpages/collectd.conf.5.shtml).
    - If you changed the collectd fetch frequency, you should also edit _graphite/conf/storage-schemas.conf_ and edit line 34, more info in the [Graphite docs](https://graphite.readthedocs.io/en/latest/config-carbon.html#storage-schemas-conf).
@@ -85,7 +85,7 @@
     http://192.168.1.20:8025
     ```
     (if you changed the port Grafana runs on, then you will need to replace 8025 with that port)
-4.  The dashboard and data source will already be set up but you can modify all of it to suit your needs. Auto refresh and time range options are in the top right corner, and more information on dashboard can be found [here](https://grafana.com/docs/grafana/latest/features/dashboard/dashboards/).
+4.  The dashboard and data source will already be set up but you can modify all of it to suit your needs. Auto refresh and time range options are in the top right corner, and more information on dashboards can be found [here](https://grafana.com/docs/grafana/latest/features/dashboard/dashboards/).
 5.  If you wish to stop the services use the following command:
     ```
     docker-compose stop
@@ -103,9 +103,9 @@
 - If the docker commands do not work, double check that you are inside the repository folder (the one with the _docker-compose.yaml_ file in it) in your terminal.
 - Verify MSI Afterburner Remote Server is working: go to _http://192.168.1.10:82/mahm_ (where 192.168.1.10 is the IP address of your PC running MSI Afterburner) in a web browser (try it on a browser that is not on the PC you are running MSI Afterburner on). You should get a pop-up asking for a username and password, use MSIAfterburner and the password you set, and verify that there is XML data visible, like [this](https://gist.github.com/joar/2a91ff54718e58011f86).
 - If your PC does not have a static local IP, you should [set it](https://www.howtogeek.com/howto/19249/how-to-assign-a-static-ip-address-in-xp-vista-or-windows-7/) to have one so that the _collectd.conf_ will not point to the wrong IP every time your PC gets a new local IP address.
-- Check if collectd is storing anything in Graphite: un-comment lines 8 and 9 of _docker-compose.yaml_ (double check your indentation [here](http://www.yamllint.com/)) and run _docker-compose up -d_ again. Visit _http://192.168.1.20:8026_ (where 192.168.1.20 is the local IP address of the PC you are running the monitoring services on). You should see the web interface for Graphite, on the left menu click metrics, you should see _collectd._ Clicking through it should show _pc_ -> _curl-xml-afterburner_ -> and the monitors you enabled.
+- Check if collectd is storing anything in Graphite: un-comment lines 8 and 9 of _docker-compose.yaml_ (delete the # and ONE space, double check your indentation [here](http://www.yamllint.com/)) and run _docker-compose up -d_ again. Visit _http://192.168.1.20:8026_ (where 192.168.1.20 is the local IP address of the PC you are running the monitoring services on). You should see the web interface for Graphite, on the left menu click metrics, you should see _collectd._ Clicking through it should show _pc_ -> _curl-xml-afterburner_ -> and the monitors you enabled.
 - If there is no data, double check your configuration in _collectd.conf_, you can also try changing the _'udp'_ on line 40 to _'tcp'_.
-- Verify the data source in Grafana: click the cog on the left for settings. On the data sources page there should be an entry for _Graphite_. Click on this and click save and test. It should say '_Data source is working_'. If not, then it is having a problem connecting to Graphite, check that the Graphite container is running and the URL is _http://grafterburner-graphite:80_.
+- Verify the data source in Grafana: click the cog on the left for settings. On the data sources page there should be an entry for _grAfterburner-Graphite_. Click on this and click save and test. It should say '_Data source is working_'. If not, then it is having a problem connecting to Graphite, check that the Graphite container is running and the URL is _http://grafterburner-graphite:80_.
 - Check the monitored metrics you set up in MSI Afterburner during step 1, the default provided dashboard uses: GPU temperature, GPU usage, Memory usage, Core clock, Memory clock, GPU voltage, Fan speed, Fan speed 2, Fan tachometer, Fan tachometer 2, Temp limit, Power limit, Voltage limit, No load limit. CPU temperature, CPU usage, CPU clock, CPU power, RAM usage, Framerate, Frametime. You do not need to have all these, and you can make your own dashboards, but the one that is already set up uses these metrics.
 - Check the [logs](https://docs.docker.com/config/containers/logging/) of the docker containers to see if there are any log messages that may help.
 

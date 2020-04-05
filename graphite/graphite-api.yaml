@@ -1,4 +1,4 @@
-search_index: /srv/graphite/index
+search_index: /opt/graphite/index
 finders:
   - graphite_api.finders.whisper.WhisperFinder
 functions:
@@ -6,8 +6,7 @@ functions:
   - graphite_api.functions.PieFunctions
 whisper:
   directories:
-    - /srv/graphite/whisper
-time_zone: <system timezone> or UTC
+    - /opt/graphite/storage/whisper
 
 carbon:
   hosts:
