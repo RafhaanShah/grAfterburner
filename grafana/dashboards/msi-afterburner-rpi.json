@@ -444,19 +444,19 @@
       },
       {
         "current": {
-          "text": "collectd.pc.curl-xml-afterburner",
-          "value": "collectd.pc.curl-xml-afterburner"
+          "text": "collectd.*.curl-xml-afterburner",
+          "value": "collectd.*.curl-xml-afterburner"
         },
         "hide": 2,
         "label": "CollectD Metric Prefix",
         "name": "afterburner",
         "options": [
           {
-            "text": "collectd.pc.curl-xml-afterburner",
-            "value": "collectd.pc.curl-xml-afterburner"
+            "text": "collectd.*.curl-xml-afterburner",
+            "value": "collectd.*.curl-xml-afterburner"
           }
         ],
-        "query": "collectd.pc.curl-xml-afterburner",
+        "query": "collectd.*.curl-xml-afterburner",
         "skipUrlSync": false,
         "type": "constant"
       }
@@ -489,5 +489,5 @@
   "variables": {
     "list": []
   },
-  "version": 1
+  "version": 2
 }

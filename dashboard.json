@@ -12,7 +12,7 @@
       "name": "VAR_AFTERBURNER",
       "type": "constant",
       "label": "CollectD Metric Prefix",
-      "value": "collectd.pc.curl-xml-afterburner",
+      "value": "collectd.*.curl-xml-afterburner",
       "description": ""
     }
   ],
@@ -848,8 +848,7 @@
     {
       "aliasColors": {
         "RAM": "orange",
-        "VRAM": "blue",
-        "collectd.pc.curl-xml-afterburner.gauge-RAM_usage": "orange"
+        "VRAM": "blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -951,8 +950,7 @@
         "GPU Power": "blue",
         "RAM": "orange",
         "VRAM": "blue",
-        "Voltage": "blue",
-        "collectd.pc.curl-xml-afterburner.gauge-RAM_usage": "orange"
+        "Voltage": "blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -1062,8 +1060,7 @@
         "Fan 2 Speed": "blue",
         "Fan 2 rpm": "orange",
         "RAM": "orange",
-        "VRAM": "blue",
-        "collectd.pc.curl-xml-afterburner.gauge-RAM_usage": "orange"
+        "VRAM": "blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -1185,8 +1182,7 @@
         "GPU": "orange",
         "GPU Power": "blue",
         "RAM": "orange",
-        "VRAM": "blue",
-        "collectd.pc.curl-xml-afterburner.gauge-RAM_usage": "orange"
+        "VRAM": "blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -1351,5 +1347,5 @@
   "variables": {
     "list": []
   },
-  "version": 1
+  "version": 2
 }
