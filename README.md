@@ -32,7 +32,7 @@
 ### Installation
 
 1.  Download and install the requirements listed in the above section and make sure that they are running.
-2.  [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) [this repository](https://github.com/RafhaanShah/grAfterburner.git) on the PC that you want the monitoring setup to run on (the one with Docker) or [download it as a zip file](https://github.com/RafhaanShah/grAfterburner/archive/master.zip) and extract it to a folder.
+2.  [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) [this repository](https://github.com/RafhaanShah/grAfterburner.git) on the PC that you want the monitoring setup to run on (the one with Docker), or download it as a zip from the [releases page](https://github.com/RafhaanShah/grAfterburner/releases) and extract it to a folder.
 
 ### Configuration
 
