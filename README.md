@@ -32,7 +32,7 @@
 ### Installation
 
 1.  Download and install the requirements listed in the above section and make sure that they are running.
-2.  [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) [this repository](https://github.com/RafhaanShah/grAfterburner.git) on the PC that you want the monitoring setup to run on (the one with Docker) or [download it as a zip file](https://github.com/RafhaanShah/grAfterburner/archive/master.zip) and extract it to a folder.
+2.  [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) [this repository](https://github.com/RafhaanShah/grAfterburner.git) on the PC that you want the monitoring setup to run on (the one with Docker), or download it as a zip from the [releases page](https://github.com/RafhaanShah/grAfterburner/releases) and extract it to a folder.
 
 ### Configuration
 
@@ -110,12 +110,5 @@
 - Try adding a panel to the Grafana dashboard and seeing if manually entering a query works. Open the dashboard, click 'add panel' on the top right, click 'add query', choose 'grAfterburner-Graphite' as the data source (or the one you set up if you added a new one), click 'select metric' under query 'A', next to 'series', and 'collectd' should show up there. Click on that and keep adding bits to the query, these should show up in the same order as they did in the Graphite web interface: _collectd_ -> _pc_ -> _curl-xml-afterburner_ -> and the monitors. Select any monitor and see if it shows some data in the query.
 - Check the monitored metrics you set up in MSI Afterburner during step 1, the default provided dashboard uses: GPU temperature, GPU usage, Memory usage, Core clock, Memory clock, GPU voltage, Fan speed, Fan speed 2, Fan tachometer, Fan tachometer 2, Temp limit, Power limit, Voltage limit, No load limit. CPU temperature, CPU usage, CPU clock, CPU power, RAM usage, Framerate, Frametime. You do not need to have all these, and you can make your own dashboards, but the one that is already set up uses these metrics.
 - Check the [logs](https://docs.docker.com/config/containers/logging/) of the docker containers to see if there are any log messages that may help.
-
-### Acknowledgments
-
-- The awesome [gamergraf](https://github.com/ragesaq/gamergraf) inspired a lot of this, and a huge credit to the project for giving me a lot of ideas and some of the configuration for things like collectd's curl_xml plugin.
-- [StackeEdit.io](https://stackedit.io/app#) for great MarkDown editing.
-- [PNGGuru](https://www.pngguru.com/) for lovely free PNG icons.
-- [Imgur](https://imgur.com/) for hosting the screenshots / images for free.
 
 ![Raspberry Pi Dashboard](https://i.imgur.com/UpnLKZh.jpg)
