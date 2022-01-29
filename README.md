@@ -25,7 +25,7 @@
 
 - For the PC you want monitored, you will need these (Windows only)
   1. [MSI Afterburner](https://www.msi.com/page/afterburner) (it will ask you about RTSS as well during installation which you need for FPS / Frametime information)
-  2. [MSI Afterburner Remote Server](https://www.msi.com/page/afterburner) (does not install but just has an executable) (appears to have been removed from this page, you may have to search around to find it, CNET, Softpedia, and TechSpot appear to have some version of it, but I cannot verify or guarantee the authenticity of these versions and whether or not they work)
+  2. [MSI Afterburner Remote Server](https://www.msi.com/page/afterburner) (does not install but just has an executable, appears to have been removed from this page, you may have to search around to find it, CNET, Softpedia, and TechSpot appear to have some version of it, but I cannot verify or guarantee the authenticity of these versions and whether or not they work) (I have used and tested with version `1.2.0.0` of the `exe` and version `1.1.0.0` of the `.dll`)
 - For the monitoring setup (can be on the same PC or a separate one, Windows / macOS / Linux)
   1. [Docker](https://docs.docker.com/install/) (and [Docker Compose](<[https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)>))
 
