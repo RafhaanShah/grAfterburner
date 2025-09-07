@@ -47,7 +47,7 @@ services:
     restart: always
     # noisy spam in logs when PC is offline
     # remove if you need to debug issues
-    logging:
-      driver: none
+    # logging:
+    #   driver: none
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro

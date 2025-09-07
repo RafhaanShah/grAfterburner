@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -12,1266 +15,2046 @@
       }
     ]
   },
-  "description": "Shows stats from MSI Afterburner",
+  "description": "Shows long term stats from MSI Afterburner from a data source.",
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1585861312837,
-  "links": [],
+  "id": 2,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "doc",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "GitHub.com/grAfterburner",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://github.com/RafhaanShah/grAfterburner"
+    }
+  ],
   "panels": [
     {
-      "datasource": "$graphite",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "displayName": "",
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 8,
-        "w": 5,
+        "w": 4,
         "x": 0,
         "y": 0
       },
       "id": 8,
       "options": {
-        "fieldOptions": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "decimals": 0,
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 50
-                },
-                {
-                  "color": "orange",
-                  "value": 75
-                },
-                {
-                  "color": "red",
-                  "value": 90
-                }
-              ]
-            },
-            "title": "",
-            "unit": "percent"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "6.7.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "${MetricPrefix}cpu_usage{\"$HostFilterLabel\"=~\"$Host\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "CPU",
+          "range": true,
           "refId": "A",
-          "target": "alias($afterburner.gauge-CPU_usage, 'CPU')",
-          "textEditor": false
+          "useBackend": false
         },
         {
-          "refCount": 0,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_usage{\"$HostFilterLabel\"=~\"$Host\"}",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "GPU",
+          "range": true,
           "refId": "B",
-          "target": "alias($afterburner.gauge-GPU_usage, 'GPU')"
+          "useBackend": false
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "",
       "type": "gauge"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "$graphite",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "displayName": "",
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 50
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 4,
+        "h": 8,
         "w": 4,
-        "x": 5,
+        "x": 4,
         "y": 0
       },
-      "id": 14,
-      "links": [],
+      "id": 9,
       "options": {
-        "colorMode": "value",
-        "fieldOptions": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "decimals": 0,
-            "mappings": [
-              {
-                "id": 0,
-                "op": "=",
-                "text": "T",
-                "type": 1,
-                "value": "1"
-              },
-              {
-                "from": "",
-                "id": 1,
-                "operator": "",
-                "text": "F",
-                "to": "",
-                "type": 1,
-                "value": "0"
-              }
-            ],
-            "max": 1,
-            "min": -0.1,
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 1
-                }
-              ]
-            },
-            "title": "",
-            "unit": "none"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "vertical"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "6.7.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-No_load_limit, 'No Load')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}cpu_temp{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "CPU",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-Power_limit, 'Power')"
-        },
-        {
-          "refCount": 0,
-          "refId": "C",
-          "target": "alias($afterburner.gauge-Temp_limit, 'Temperature')"
-        },
-        {
-          "refCount": 0,
-          "refId": "D",
-          "target": "alias($afterburner.gauge-Voltage_limit, 'Voltage')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_temp{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "GPU",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "GPU Limiting Factor",
-      "transparent": true,
-      "type": "stat"
+      "title": "",
+      "type": "gauge"
     },
     {
-      "datasource": "$graphite",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "displayName": "FPS",
+          "mappings": [],
+          "max": 200,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 30
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 9,
+        "w": 2,
+        "x": 8,
         "y": 0
       },
       "id": 10,
       "options": {
-        "fieldOptions": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "decimals": 0,
-            "mappings": [],
-            "max": 200,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "orange",
-                  "value": 30
-                },
-                {
-                  "color": "yellow",
-                  "value": 60
-                },
-                {
-                  "color": "green",
-                  "value": 90
-                }
-              ]
-            },
-            "title": "FPS",
-            "unit": "none"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "6.7.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-Framerate, 'FPS')",
-          "textEditor": false
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}framerate{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "",
       "type": "gauge"
     },
     {
-      "aliasColors": {
-        "CPU": "orange",
-        "CPU Temperature": "orange",
-        "CPU Usage": "blue",
-        "FPS": "orange",
-        "Frametime": "blue",
-        "GPU": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$graphite",
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [
+            {
+              "id": 0,
+              "op": "=",
+              "text": "T",
+              "type": 1,
+              "value": "1"
+            },
+            {
+              "from": "",
+              "id": 1,
+              "operator": "",
+              "text": "F",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            }
+          ],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
+        "w": 4,
+        "x": 10,
         "y": 0
       },
-      "hiddenSeries": false,
-      "id": 6,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
+      "id": 14,
       "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Frametime",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-Framerate, 'FPS')",
-          "textEditor": false
-        },
-        {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-Frametime, 'Frametime')"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "FPS / Frametime",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "ms",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "datasource": "$graphite",
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 5,
-        "y": 4
-      },
-      "id": 9,
-      "options": {
-        "fieldOptions": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "decimals": 0,
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "#EAB839",
-                  "value": 50
-                },
-                {
-                  "color": "orange",
-                  "value": 75
-                },
-                {
-                  "color": "red",
-                  "value": 90
-                }
-              ]
-            },
-            "title": "",
-            "unit": "celsius"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "6.7.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-CPU_temperature, 'CPU')",
-          "textEditor": false
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}temp_limit{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "Temp",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-GPU_temperature, 'GPU')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}power_limit{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Power",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}voltage_limit{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Voltage",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}no_load_limit{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "No Load",
+          "range": true,
+          "refId": "D"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "",
-      "type": "gauge"
+      "title": "GPU Limiting Factor",
+      "type": "stat"
     },
     {
-      "datasource": "$graphite",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "fieldMinMax": true,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "FPS"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisSoftMax",
+                "value": 100
+              },
+              {
+                "id": "max",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Frametime"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisSoftMax",
+                "value": 50
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "max",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 14,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "${MetricPrefix}framerate{\"$HostFilterLabel\"=~\"$Host\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "FPS",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "${MetricPrefix}frametime{\"$HostFilterLabel\"=~\"$Host\"}",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "Frametime",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        }
+      ],
+      "title": "FPS / Frametime",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Frametime",
+          "mappings": [],
+          "max": 200,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
+              },
+              {
+                "color": "#EAB839",
+                "value": 16.6
+              },
+              {
+                "color": "orange",
+                "value": 33.3
+              },
+              {
+                "color": "red",
+                "value": 66.66
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 9,
+        "w": 2,
+        "x": 8,
         "y": 4
       },
       "id": 11,
       "options": {
-        "fieldOptions": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [],
-            "max": 200,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "green",
-                  "value": 1
-                },
-                {
-                  "color": "#EAB839",
-                  "value": 16.7
-                },
-                {
-                  "color": "orange",
-                  "value": 33.3
-                },
-                {
-                  "color": "red",
-                  "value": 66.65
-                }
-              ]
-            },
-            "title": "Frametime",
-            "unit": "ms"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "6.7.1",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-Frametime, 'FPS')",
-          "textEditor": false
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}frametime{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "",
       "type": "gauge"
     },
     {
-      "aliasColors": {
-        "CPU": "orange",
-        "CPU Temperature": "orange",
-        "CPU Usage": "blue",
-        "GPU": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "grAfterburner-Graphite",
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 8
       },
-      "hiddenSeries": false,
       "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-CPU_usage, 'CPU')",
-          "textEditor": false
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}cpu_usage{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "CPU",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-GPU_usage, 'GPU')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_usage{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "GPU",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "Load",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "percent",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "none",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "CPU": "orange",
-        "CPU Temperature": "orange",
-        "CPU Usage": "blue",
-        "GPU": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P02AE89B78652C585"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$graphite",
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 8
       },
-      "hiddenSeries": false,
       "id": 3,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-CPU_temperature, 'CPU')",
-          "textEditor": false
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P02AE89B78652C585"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}cpu_temp{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "CPU",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-GPU_temperature, 'GPU')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P02AE89B78652C585"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_temp{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "GPU",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "Temperature",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "celsius",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "none",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "CPU": "orange",
-        "CPU Temperature": "orange",
-        "CPU Usage": "blue",
-        "GPU": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$graphite",
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU Memory"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 16
       },
-      "hiddenSeries": false,
       "id": 7,
-      "legend": {
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "GPU",
-          "yaxis": 2
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
-        {
-          "alias": "scale(GPU,1e+06)",
-          "yaxis": 2
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias(scale($afterburner.gauge-CPU_clock, 1000000), 'CPU')",
-          "textEditor": false
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}cpu_clock{\"$HostFilterLabel\"=~\"$Host\"} * ${ClockSpeedScale}",
+          "instant": false,
+          "legendFormat": "CPU",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias(scale($afterburner.gauge-Core_clock, 1000000), 'GPU')"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Clockspeeds",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "hertz",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_clock{\"$HostFilterLabel\"=~\"$Host\"} * ${ClockSpeedScale}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "GPU",
+          "range": true,
+          "refId": "B"
         },
         {
-          "format": "hertz",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_memory_clock{\"$HostFilterLabel\"=~\"$Host\"} * ${ClockSpeedScale}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "GPU Memory",
+          "range": true,
+          "refId": "C"
         }
       ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "title": "Clock Speed",
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "RAM": "orange",
-        "VRAM": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$graphite",
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VRAM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 16
       },
-      "hiddenSeries": false,
       "id": 5,
-      "legend": {
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-RAM_usage, 'RAM')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}ram{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "RAM",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-Memory_usage, 'VRAM')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}vram{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "VRAM",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "Memory",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "decmbytes",
-          "label": null,
-          "logBase": 1,
-          "max": "16384",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "CPU": "blue",
-        "CPU Power": "orange",
-        "GPU": "orange",
-        "GPU Memory Clock": "orange",
-        "GPU Power": "blue",
-        "RAM": "orange",
-        "VRAM": "blue",
-        "Voltage": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$graphite",
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Power"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU Memory Clock"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU Power"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VRAM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Voltage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Voltage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "volt"
+              },
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "max",
+                "value": 2
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 8,
         "x": 0,
         "y": 24
       },
-      "hiddenSeries": false,
       "id": 16,
-      "legend": {
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Voltage",
-          "yaxis": 2
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias(scale($afterburner.gauge-Memory_clock, 1000000), 'GPU Memory Clock')"
-        },
-        {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-GPU_voltage, 'Voltage')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_voltage{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "GPU",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Voltage / Memory Clock",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "hertz",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "decimals": 3,
-          "format": "volt",
-          "label": null,
-          "logBase": 1,
-          "max": "2",
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "title": "Voltage",
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "Fan 1 %": "blue",
-        "Fan 1 RPM": "blue",
-        "Fan 1 Speed": "blue",
-        "Fan 1 rpm": "orange",
-        "Fan 2 %": "orange",
-        "Fan 2 RPM": "orange",
-        "Fan 2 Speed": "blue",
-        "Fan 2 rpm": "orange",
-        "RAM": "orange",
-        "VRAM": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$graphite",
-      "fill": 0,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fan RPM"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "rotrpm"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fan Speed"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 8,
         "x": 8,
         "y": 24
       },
-      "hiddenSeries": false,
       "id": 12,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Fan 1 rpm",
-          "yaxis": 2
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
-        {
-          "alias": "Fan 2 rpm",
-          "yaxis": 2
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-Fan_speed, 'Fan 1 Speed')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}fan_rpm{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "Fan RPM",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-Fan_speed_2, 'Fan 2 Speed')"
-        },
-        {
-          "refCount": 0,
-          "refId": "C",
-          "target": "alias($afterburner.gauge-Fan_tachometer, 'Fan 1 rpm')"
-        },
-        {
-          "refCount": 0,
-          "refId": "D",
-          "target": "alias($afterburner.gauge-Fan_tachometer_2, 'Fan 2 rpm')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}fan_speed{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Fan Speed",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "GPU Fans",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "percent",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "0",
-          "show": true
-        },
-        {
-          "decimals": 0,
-          "format": "rpm",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {
-        "CPU": "blue",
-        "CPU Power": "orange",
-        "GPU": "orange",
-        "GPU Power": "blue",
-        "RAM": "orange",
-        "VRAM": "blue"
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Source}"
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$graphite",
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GPU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 8,
         "x": 16,
         "y": 24
       },
-      "hiddenSeries": false,
       "id": 15,
-      "legend": {
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "last",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "12.1.1",
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "alias($afterburner.gauge-CPU_power, 'CPU')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}cpu_power{\"$HostFilterLabel\"=~\"$Host\"}",
+          "instant": false,
+          "legendFormat": "CPU",
+          "range": true,
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "alias($afterburner.gauge-Power, 'GPU')"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Source}"
+          },
+          "editorMode": "code",
+          "expr": "${MetricPrefix}gpu_power{\"$HostFilterLabel\"=~\"$Host\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "GPU",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
       "title": "Power",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": false,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "watt",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "timeseries"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 22,
-  "style": "dark",
+  "preload": false,
+  "refresh": "1s",
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": [
       {
+        "allValue": ".*",
+        "allowCustomValue": false,
         "current": {
-          "selected": false,
-          "text": "grAfterburner-Graphite",
-          "value": "grAfterburner-Graphite"
+          "text": "grAfterburner-VictoriaMetrics",
+          "value": "P02AE89B78652C585"
         },
-        "hide": 0,
+        "description": "Data Source to fetch from.",
         "includeAll": false,
-        "label": "Graphite",
-        "multi": false,
-        "name": "graphite",
+        "label": "Source",
+        "name": "Source",
         "options": [],
-        "query": "graphite",
+        "query": "prometheus",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
+        "allValue": ".*",
+        "allowCustomValue": false,
         "current": {
-          "text": "collectd.*.curl-xml-afterburner",
-          "value": "collectd.*pc.curl-xml-afterburner"
+          "text": "http://rafs-pc.lan:82/mahm",
+          "value": "http://rafs-pc.lan:82/mahm"
         },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${Source}"
+        },
+        "definition": "label_values(msi_afterburner_framerate,url)",
+        "description": "Host to filter data from.",
+        "includeAll": false,
+        "label": "Host",
+        "name": "Host",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(msi_afterburner_framerate,url)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "url",
+          "value": "url"
+        },
+        "description": "Label to filter host by.",
         "hide": 2,
-        "label": "CollectD Metric Prefix",
-        "name": "afterburner",
-        "options": [
-          {
-            "text": "collectd.*.curl-xml-afterburner",
-            "value": "collectd.*.curl-xml-afterburner"
-          }
-        ],
-        "query": "collectd.*.curl-xml-afterburner",
-        "skipUrlSync": false,
+        "name": "HostFilterLabel",
+        "query": "url",
+        "skipUrlSync": true,
+        "type": "constant"
+      },
+      {
+        "current": {
+          "text": "msi_afterburner_",
+          "value": "msi_afterburner_"
+        },
+        "description": "Prefix for each metric name.",
+        "hide": 2,
+        "name": "MetricPrefix",
+        "query": "msi_afterburner_",
+        "skipUrlSync": true,
+        "type": "constant"
+      },
+      {
+        "current": {
+          "text": "1000000",
+          "value": "1000000"
+        },
+        "description": "Scale for ClockSpeed measurements.",
+        "hide": 2,
+        "name": "ClockSpeedScale",
+        "query": "1000000",
+        "skipUrlSync": true,
         "type": "constant"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -1294,8 +2077,5 @@
   "timezone": "",
   "title": "MSI Afterburner",
   "uid": "gGWviXrZ2",
-  "variables": {
-    "list": []
-  },
   "version": 2
 }
