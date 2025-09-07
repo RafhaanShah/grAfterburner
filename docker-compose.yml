@@ -1,21 +1,25 @@
-version: "3.7"
+# https://docs.docker.com/reference/compose-file/
 
 services:
-  graphite:
-    container_name: grafterburner-graphite
-    image: "graphiteapp/graphite-statsd:latest"
+  # https://docs.victoriametrics.com/victoriametrics/quick-start/
+  # remove this section if long term data is not required
+  # also remove section in telegraf.conf
+  victoriametrics:
+    container_name: grafterburner-victoriametrics
+    image: victoriametrics/victoria-metrics:latest
     restart: always
-    # ports:
-      # - 8026:80
+    command:
+      - "--storageDataPath=/storage" # Storage path inside container
+      - "--graphiteListenAddr=:2003" # Graphite plaintext format, UDP / TCP
+      - "--opentsdbListenAddr=:4242" # OpenTSDB format, UDP / TCP
+      - "--influxListenAddr=:8189" # InfluxDB line protocol, UDP / TCP
+      - "--httpListenAddr=:8428" # HTTP / InfluxDB format, TCP
+      - "--search.latencyOffset=1s" # Data becomes available 1s after ingestion
+      - "--retentionPeriod=1" # Months
     volumes:
-      - "./graphite/conf:/opt/graphite/conf"
-      - "./graphite/storage:/opt/graphite/storage"
-      - "./graphite/graphite-api.yaml:/etc/graphite-api.yaml"
-    environment:
-      - "CARBON_AGGREGATOR_DISABLED=1"
-      - "REDIS_DISABLED=1"
-      - "STATSD_DISABLED=1"
+      - ./victoriametrics:/storage
 
+  # https://grafana.com/docs/grafana/latest/setup-grafana/configure-docker/
   grafana:
     container_name: grafterburner-grafana
     image: "grafana/grafana:latest"
@@ -28,18 +32,22 @@ services:
       - "./grafana/datasources:/etc/grafana/provisioning/datasources"
       - "./grafana/dashboards:/etc/grafana/provisioning/dashboards"
     environment:
+      - "GF_DASHBOARDS_MIN_REFRESH_INTERVAL=1s"
+      # change below options for security if required
+      # https://github.com/grafana/grafana/blob/main/conf/defaults.ini
+      - "GF_AUTH_DISABLE_LOGIN=true"
       - "GF_AUTH_DISABLE_LOGIN_FORM=true"
       - "GF_AUTH_ANONYMOUS_ENABLED=true"
       - "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
-      - "GF_DASHBOARDS_MIN_REFRESH_INTERVAL=1s"
-    depends_on:
-      - graphite
 
-  collectd:
-    container_name: grafterburner-collectd
-    build: collectd
+  # https://hub.docker.com/_/telegraf
+  telegraf:
+    container_name: grafterburner-telegraf
+    image: telegraf:latest
     restart: always
+    # noisy spam in logs when PC is offline
+    # remove if you need to debug issues
+    logging:
+      driver: none
     volumes:
-      - "./collectd/collectd.conf:/etc/collectd/collectd.conf"
-    depends_on:
-      - graphite
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro

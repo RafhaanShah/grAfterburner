@@ -1,0 +1,12 @@
+# https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources
+apiVersion: 1
+
+datasources:
+  - name: grAfterburner-VictoriaMetrics
+    orgId: 1
+    type: prometheus
+    access: proxy
+    url: http://grafterburner-victoriametrics:8428
+    editable: true
+    jsonData:
+      timeInterval: 1s
