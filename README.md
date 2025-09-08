@@ -2,7 +2,8 @@
 
 <p align="center"><a href="https://grafana.com"><img src="https://i.imgur.com/YSRD3li.png" width="100"/></a> <img src="https://i.imgur.com/TeISZNZ.png" vspace=20 width="50"/> <a href="https://www.msi.com/page/afterburner"><img src="https://i.imgur.com/6dY1eUu.png" width="105"/></a> <br>Monitor your PC in style with Grafana and MSI Afterburner</p>
 
-![Dashboard Screenshot](https://i.imgur.com/vTExX20.jpg)
+![Full Dashboard Screenshot](assets/dash-full.png)
+![Mini Dashboard Screenshot](assets/dash-mini.png)
 
 ### Why?
 
@@ -10,16 +11,17 @@
 - Since I have a single monitor set-up, I wanted something I could display on my [Raspberry Pi 3B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) which I had a small [3.5" Display](https://learn.adafruit.com/adafruit-pitft-3-dot-5-touch-screen-for-raspberry-pi/overview) for, and I did not want to run yet another monitoring software just for that. Also, very few software can monitor the frame-time during games.
 - As MSI Afterburner has an additional Remote Server component, I wanted to find a way to get that displayed in a nice dashboard, which led me to this.
 - [Interactive Snapshot Demo](https://snapshot.raintank.io/dashboard/snapshot/Z5mCjhrfHn8bTYr7Ld3YgbRoNAvbl6We) (not 100% accurate as some features are not supported)
-- The Grafana dashboard can be found [here](https://grafana.com/grafana/dashboards/12021) to import into your existing instance.
+- The Full Grafana dashboard can be found [here](https://grafana.com/grafana/dashboards/12021) to import into your existing instance, this fetches stats from a database.
+- The Live version of the Grafana dashboard can be found [here](https://grafana.com/grafana/dashboards/24041) to import into your existing instance, this has stats streamed directly to Grafana without any database.
 
 ### Components
 
 - [MSI Afterburner](https://www.msi.com/page/afterburner): provides a detailed overview of your hardware, and also allows graphics card overclocking. Includes [RTSS](https://www.guru3d.com/files-details/rtss-rivatuner-statistics-server-download.html) which also provides an on-screen-display during games.
 - [MSI Afterburner Remote Server](https://www.msi.com/page/afterburner): serves up an HTTP endpoint with data from MSI Afterburner in an XML format.
-- [collectd](https://collectd.org/): a daemon which collects metrics periodically and provides mechanisms to store the values in a variety of ways. Used to perform HTTP requests to the MSI Afterburner endpoint and store the data in a database.
-- [Graphite](https://graphiteapp.org/): a monitoring tool that stores numeric time-series data and provides an API to access it. Stores all the data from collectd.
-- [Grafana](https://grafana.com/): allows you to query, visualize, alert on and understand your metrics and create your own dashboards. Visualizes the data stored in Graphite.
-- [Docker](https://www.docker.com/): tool for building and running applications in containers. Allows you to start up collectd, Graphite and Grafana in one command without needing to think about dependencies or configurations.
+- [Telegraf](https://github.com/influxdata/telegraf): an agent which collects metrics periodically and provides mechanisms to store the values in a variety of ways. Used to perform HTTP requests to the MSI Afterburner endpoint and store the data in a database.
+- [VictoriaMetrics](https://github.com/VictoriaMetrics/VictoriaMetrics): a time-series database that stores numeric time-series data and provides an API to access it. Stores the data from the collecting agent.
+- [Grafana](https://grafana.com/): allows you to query, visualize, alert on and understand your metrics and create your own dashboards. Visualizes the data stored in various sources, and can have data streamed directly to it.
+- [Docker](https://www.docker.com/): tool for building and running applications in containers. Allows you to start up the collection agent, database, and dashboard in one command without needing to think about dependencies or configurations.
 
 ### Requirements
 
@@ -49,29 +51,24 @@
    - Press restart server when you are done
 3. **Monitoring Configuration:**
    - Open the cloned repository folder
-   - There is a _collectd.conf_ file inside the collectd folder, open this in a text editor
-   - Edit line 14 to be the [local IP](https://lifehacker.com/how-to-find-your-local-and-external-ip-address-5833108) address and the port of your PC (the one with MSI Afterburner running) which you configured in the previous step, e.g.: if my PC's IP address is 192.168.1.10 and I set port 82, the line should be:
+   - Find and open [`telegraf/telegraf.conf`](telegraf/telegraf.conf)
+   - Edit the `urls` line under `[[inputs.http]]` to be the [`Local IP`](https://lifehacker.com/how-to-find-your-local-and-external-ip-address-5833108) address and the port of your PC (the one with MSI Afterburner running) which you configured in the previous step, e.g.: if my PC's IP address is 192.168.1.123 and I set port 82, the line should be:
      ```
-     <URL "http://192.168.1.10:82/mahm">
+     urls = ["http://192.168.1.123:82/mahm"]
      ```
      (You can also use your PC's hostname instead of the IP if you have local hostname resolution working on your network)
-   - Edit line 19 to have the password you set in step 3, e.g.: if my password is "abcd1234" the line should be:
+   - Edit the `password` line to have the password you set in step 3, e.g.: if my password is `abcd1234` the line should be:
      ```
-     Password "abcd1234"
+     password = "abcd1234"
      ```
    - Save and close the file
-   - Additional step for Raspberry Pi's / ARM based computers ONLY - edit line 21 of _docker-compose.yaml_ to be:
-     ```
-     image: "grafana/grafana-arm32v7-linux:latest"
-     ```
 4. **Optional Configurations:**
-   - Edit line 25 of _docker-compose.yaml_ to change the port Grafana runs on from 8025 to something else (leave the 3000).
-   - Remove line 29-32 of _docker-compose.yaml_ if you want to enable login with password for Grafana.
-   - If you do not want the services to start on the boot-up of your system remove the 3 lines in _docker-compose.yaml_ that say _'restart: always'_ (line 7, 22, 39).
+   - Edit [`docker-compose.yaml`](docker-compose.yaml) under `grafana > ports` to change the port Grafana runs on from `8025` to something else (leave the `3000`).
+   - Edit [`docker-compose.yaml`](docker-compose.yaml) under `grafana > env` if you want to change login configuration for Grafana and any other [environment variables](https://grafana.com/docs/grafana/latest/installation/configuration/#configure-with-environment-variables).
+   - If you do not want the services to start on the boot-up of your system remove the lines in [`docker-compose.yaml`](docker-compose.yaml) that say `'restart: always'`.
    - If you wish to change how often MSI Afterburner polls your hardware for new data, open MSI Afterburner, Settings -> Monitoring -> Hardware Polling Period.
-   - You will probably also want to change how often collectd fetches new data as well, so open _collectd.conf_ and edit line 11 and 15, further reading in the [collectd docs](https://collectd.org/documentation/manpages/collectd.conf.5.shtml).
-   - If you changed the collectd fetch frequency, you should also edit _graphite/conf/storage-schemas.conf_ and edit line 34, more info in the [Graphite docs](https://graphite.readthedocs.io/en/latest/config-carbon.html#storage-schemas-conf).
-   - Various Grafana configuration options can be changed through [environment variables](https://grafana.com/docs/grafana/latest/installation/configuration/#configure-with-environment-variables) in the docker-compose file.
+   - You will probably also want to change how often new data is fetched as well, so open [`telegraf/telegraf.conf`](telegraf/telegraf.conf) and edit lines related to `interval`.
+   - If you do not need / want long term data, you can remove `victoriametrics` section from [`docker-compose.yaml`](docker-compose.yaml) and `[[outputs.influxdb_v2]]` section from [`telegraf/telegraf.conf`](telegraf/telegraf.conf) - this will only stream data directly to Grafana, so you will only have "live" data and not historical data.
 
 ### Running
 
@@ -80,38 +77,37 @@
     ```
     docker-compose up -d
     ```
-3.  To open the Grafana and view the dashboard, you will need to know the local IP address of the computer running the services, e.g.: if the computer I am running the services on has a local IP address of 192.168.1.20, then I will need to type into my web browser:
+3.  To open the Grafana and view the dashboard, you will need to know the local IP address of the computer running the services, e.g.: if the computer I am running the services on has a Local IP address of `192.168.1.20`, then I will need to type into my web browser:
     ```
     http://192.168.1.20:8025
     ```
-    (if you changed the port Grafana runs on, then you will need to replace 8025 with that port)
+    (if you changed the port Grafana runs on, then you will need to replace `8025` with that port)
 4.  The dashboard and data source will already be set up but you can modify all of it to suit your needs. Auto refresh and time range options are in the top right corner, and more information on dashboards can be found [here](https://grafana.com/docs/grafana/latest/features/dashboard/dashboards/).
-5.  If you wish to stop the services use the following command:
+5. There will be 2 dashboards provided by default, the `Full` dashboard includes more metrics and fetches data from the database. The `Live` dashboard has data streamed directly from the collection agent, so there will be less latency, but you can only see the current data. Both dashboards can be modified to include / exclude any data.
+6.  If you wish to stop the services use the following command:
     ```
     docker-compose stop
     ```
 
 ### Notes
 
+- If your PC does not have a Static Local IP, you should [set it](https://www.howtogeek.com/howto/19249/how-to-assign-a-static-ip-address-in-xp-vista-or-windows-7/) to have one so that [`telegraf/telegraf.conf`](telegraf/telegraf.conf) will not point to the wrong IP every time your PC gets a new Local IP address. Alternatively you can use the PC's hostname if you have local hostname resolution working on your network.
 - I'd recommend running the monitoring on a different PC to your main one, so as to not affect it's performance.
-- The number of graphs and the refresh rate will affect the amount of CPU usage by the Graphite docker container.
-- SD cards used in Raspberry Pi's are not really meant to be [constantly written](https://domoticproject.com/extending-life-raspberry-pi-sd-card/) to, and even though Graphite is very efficient with it's storage, you may want to look into booting off an SSD or setting the Graphite storage [volume](https://docs.docker.com/compose/compose-file/#volumes) (line 12 of _docker-compose.yaml_) to be on an external drive.
+- The number of graphs and the refresh rate will affect the amount of CPU usage by the database.
+- SD cards used in Raspberry Pi's are not really meant to be [constantly written](https://domoticproject.com/extending-life-raspberry-pi-sd-card/) to, and even though the database may be very efficient with it's storage, you may want to look into booting off an SSD or setting the storage [volume](https://docs.docker.com/compose/compose-file/#volumes) to be on an external drive.
 - If you are using a small screen (like a 3.5" Raspberry Pi Screen), you may need to adjust the zoom level of the dashboard in your browser to be able to fit more graphs at once.
-- For monitoring more than 1 PC, you need to copy the _Plugin curl_xml_ section in _collectd.conf_ (line 20 to 34) and change the _Host_ line in both places to be different. This will cause the panels in the dashboard to show data for all of the PC's together, so you may want to edit the [query variable](https://grafana.com/docs/grafana/latest/reference/templating/#adding-a-variable) to be for a specific host, and create a new variable for each PC.
+- For monitoring more than 1 PC, you need to modify [`telegraf/telegraf.conf`](telegraf/telegraf.conf) and either add another IP in `urls` or add a whole new `[[inputs.http]]` section depending your preference. You will likely need to update the dashboards to fit your preference as well as it is designed to show a single host at a time.
 
 ### Troubleshooting
 
-- If the docker commands do not work, double check that you are inside the repository folder (the one with the _docker-compose.yaml_ file in it) in your terminal.
-- Verify MSI Afterburner Remote Server is working: go to _http://192.168.1.10:82/mahm_ (where 192.168.1.10 is the IP address of your PC running MSI Afterburner) in a web browser (try it on a browser that is not on the PC you are running MSI Afterburner on). You should get a pop-up asking for a username and password, use MSIAfterburner and the password you set, and verify that there is XML data visible, like [this](https://gist.github.com/joar/2a91ff54718e58011f86).
-- If your PC does not have a static local IP, you should [set it](https://www.howtogeek.com/howto/19249/how-to-assign-a-static-ip-address-in-xp-vista-or-windows-7/) to have one so that the _collectd.conf_ will not point to the wrong IP every time your PC gets a new local IP address.
-- Check if collectd is storing anything in Graphite: un-comment lines 8 and 9 of _docker-compose.yaml_ (delete the # and ONE space, double check your indentation [here](http://www.yamllint.com/)) and run _docker-compose up -d_ again. Visit _http://192.168.1.20:8026_ (where 192.168.1.20 is the local IP address of the PC you are running the monitoring services on). You should see the web interface for Graphite, on the left menu click metrics, you should see _collectd._ Clicking through it should show _pc_ -> _curl-xml-afterburner_ -> and the monitors you enabled.
-- If there is no data, double check your configuration in _collectd.conf_, you can also try changing the _'udp'_ on line 40 to _'tcp'_.
-- Verify the data source in Grafana: click the cog on the left for settings. On the data sources page there should be an entry for _grAfterburner-Graphite_. Click on this and click save and test. It should say '_Data source is working_'. If not, then it is having a problem connecting to Graphite, check that the Graphite container is running and the URL is _http://grafterburner-graphite:80_.
-- Try adding a panel to the Grafana dashboard and seeing if manually entering a query works. Open the dashboard, click 'add panel' on the top right, click 'add query', choose 'grAfterburner-Graphite' as the data source (or the one you set up if you added a new one), click 'select metric' under query 'A', next to 'series', and 'collectd' should show up there. Click on that and keep adding bits to the query, these should show up in the same order as they did in the Graphite web interface: _collectd_ -> _pc_ -> _curl-xml-afterburner_ -> and the monitors. Select any monitor and see if it shows some data in the query.
+- Verify MSI Afterburner Remote Server is working: go to `http://192.168.1.123:82/mahm` (where `192.168.1.123` is the IP address of your PC running MSI Afterburner) in a web browser (try it on a browser that is not on the PC you are running MSI Afterburner on). You should get a pop-up asking for a username and password, use MSIAfterburner and the password you set, and verify that there is XML data visible, like [this](https://gist.github.com/joar/2a91ff54718e58011f86).
+- Verify the data source in Grafana: click the cog on the left for settings. On the data sources page there should be an entry already there. Click on this and click save and test. It should have a success message.
+- Go to Grafana > Explore, select Grafana as the data source and Live Measurements as the Query Type, and `stream/msi_afterburner` should appear under Channel.
+- Go to Grafana > Drilldown > Metrics, select the correct data source to see if Grafana is finding any data from the database.
 - Check the monitored metrics you set up in MSI Afterburner during step 1, the default provided dashboard uses: GPU temperature, GPU usage, Memory usage, Core clock, Memory clock, GPU voltage, Fan speed, Fan speed 2, Fan tachometer, Fan tachometer 2, Temp limit, Power limit, Voltage limit, No load limit. CPU temperature, CPU usage, CPU clock, CPU power, RAM usage, Framerate, Frametime. You do not need to have all these, and you can make your own dashboards, but the one that is already set up uses these metrics.
-- Check the [logs](https://docs.docker.com/config/containers/logging/) of the docker containers to see if there are any log messages that may help.
+- Check the [logs](https://docs.docker.com/config/containers/logging/) of the docker containers to see if there are any log messages that may help, look in [`docker-compose.yaml`](docker-compose.yaml) and [`telegraf/telegraf.conf`](telegraf/telegraf.conf) for comments that can help debug.
 
-![Raspberry Pi Dashboard](https://i.imgur.com/UpnLKZh.jpg)
+![Raspberry Pi Dashboard](assets/pi.jpeg)
 
 ### Alternatives / Similar Tools
 - [gamergraf](https://github.com/ragesaq/gamergraf)

@@ -8,6 +8,9 @@ services:
     container_name: grafterburner-victoriametrics
     image: victoriametrics/victoria-metrics:latest
     restart: always
+    # uncomment below to access VM-UI
+    # ports:
+    #   - 8428:8428
     command:
       - "--storageDataPath=/storage" # Storage path inside container
       - "--graphiteListenAddr=:2003" # Graphite plaintext format, UDP / TCP
