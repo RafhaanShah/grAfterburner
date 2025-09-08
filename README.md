@@ -18,7 +18,7 @@
 
 - [MSI Afterburner](https://www.msi.com/page/afterburner): provides a detailed overview of your hardware, and also allows graphics card overclocking. Includes [RTSS](https://www.guru3d.com/files-details/rtss-rivatuner-statistics-server-download.html) which also provides an on-screen-display during games.
 - [MSI Afterburner Remote Server](https://www.msi.com/page/afterburner): serves up an HTTP endpoint with data from MSI Afterburner in an XML format.
-- [Telegraf](https://github.com/influxdata/telegraf): an agent which collects metrics periodically and provides mechanisms to store the values in a variety of ways. Used to perform HTTP requests to the MSI Afterburner endpoint and store the data in a database.
+- [Telegraf](https://github.com/influxdata/telegraf): an agent which collects metrics periodically and provides mechanisms to store the values in a variety of ways. Used to perform HTTP requests to the MSI Afterburner endpoint and store the data in a database, and can also stream to Grafana directly.
 - [VictoriaMetrics](https://github.com/VictoriaMetrics/VictoriaMetrics): a time-series database that stores numeric time-series data and provides an API to access it. Stores the data from the collecting agent.
 - [Grafana](https://grafana.com/): allows you to query, visualize, alert on and understand your metrics and create your own dashboards. Visualizes the data stored in various sources, and can have data streamed directly to it.
 - [Docker](https://www.docker.com/): tool for building and running applications in containers. Allows you to start up the collection agent, database, and dashboard in one command without needing to think about dependencies or configurations.
@@ -34,7 +34,7 @@
 ### Installation
 
 1.  Download and install the requirements listed in the above section and make sure that they are running.
-2.  [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) [this repository](https://github.com/RafhaanShah/grAfterburner.git) on the PC that you want the monitoring setup to run on (the one with Docker), or download it as a zip from the [releases page](https://github.com/RafhaanShah/grAfterburner/releases) and extract it to a folder.
+2.  Download the `Source code zip` from the latest [releases page](https://github.com/RafhaanShah/grAfterburner/releases) and extract it to a folder.
 
 ### Configuration
 
@@ -63,12 +63,12 @@
      ```
    - Save and close the file
 4. **Optional Configurations:**
-   - Edit [`docker-compose.yaml`](docker-compose.yaml) under `grafana > ports` to change the port Grafana runs on from `8025` to something else (leave the `3000`).
-   - Edit [`docker-compose.yaml`](docker-compose.yaml) under `grafana > env` if you want to change login configuration for Grafana and any other [environment variables](https://grafana.com/docs/grafana/latest/installation/configuration/#configure-with-environment-variables).
-   - If you do not want the services to start on the boot-up of your system remove the lines in [`docker-compose.yaml`](docker-compose.yaml) that say `'restart: always'`.
+   - Edit [`docker-compose.yml`](docker-compose.yml) under `grafana > ports` to change the port Grafana runs on from `8025` to something else (leave the `3000`).
+   - Edit [`docker-compose.yml`](docker-compose.yml) under `grafana > env` if you want to change login configuration for Grafana and any other [environment variables](https://grafana.com/docs/grafana/latest/installation/configuration/#configure-with-environment-variables).
+   - If you do not want the services to start on the boot-up of your system remove the lines in [`docker-compose.yml`](docker-compose.yml) that say `'restart: always'`.
    - If you wish to change how often MSI Afterburner polls your hardware for new data, open MSI Afterburner, Settings -> Monitoring -> Hardware Polling Period.
    - You will probably also want to change how often new data is fetched as well, so open [`telegraf/telegraf.conf`](telegraf/telegraf.conf) and edit lines related to `interval`.
-   - If you do not need / want long term data, you can remove `victoriametrics` section from [`docker-compose.yaml`](docker-compose.yaml) and `[[outputs.influxdb_v2]]` section from [`telegraf/telegraf.conf`](telegraf/telegraf.conf) - this will only stream data directly to Grafana, so you will only have "live" data and not historical data.
+   - If you do not need / want long term data, you can remove `victoriametrics` section from [`docker-compose.yml`](docker-compose.yml) and `[[outputs.influxdb_v2]]` section from [`telegraf/telegraf.conf`](telegraf/telegraf.conf) - this will only stream data directly to Grafana, so you will only have "live" data and not historical data.
 
 ### Running
 
@@ -105,7 +105,7 @@
 - Go to Grafana > Explore, select Grafana as the data source and Live Measurements as the Query Type, and `stream/msi_afterburner` should appear under Channel.
 - Go to Grafana > Drilldown > Metrics, select the correct data source to see if Grafana is finding any data from the database.
 - Check the monitored metrics you set up in MSI Afterburner during step 1, the default provided dashboard uses: GPU temperature, GPU usage, Memory usage, Core clock, Memory clock, GPU voltage, Fan speed, Fan speed 2, Fan tachometer, Fan tachometer 2, Temp limit, Power limit, Voltage limit, No load limit. CPU temperature, CPU usage, CPU clock, CPU power, RAM usage, Framerate, Frametime. You do not need to have all these, and you can make your own dashboards, but the one that is already set up uses these metrics.
-- Check the [logs](https://docs.docker.com/config/containers/logging/) of the docker containers to see if there are any log messages that may help, look in [`docker-compose.yaml`](docker-compose.yaml) and [`telegraf/telegraf.conf`](telegraf/telegraf.conf) for comments that can help debug.
+- Check the [logs](https://docs.docker.com/config/containers/logging/) of the docker containers to see if there are any log messages that may help, look in [`docker-compose.yml`](docker-compose.yml) and [`telegraf/telegraf.conf`](telegraf/telegraf.conf) for comments that can help debug.
 
 ![Raspberry Pi Dashboard](assets/pi.jpeg)
 
